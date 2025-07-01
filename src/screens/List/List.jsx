@@ -3,12 +3,13 @@ import './List.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const List = ({ url }) => {
+const List = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
   const [list, setList] = useState([]);
 
   const fetchList = async () => {
     try {
-      const response = await axios.get(`${url}/api/food/list`);
+      const response = await axios.get(`${API_BASE_URL}/api/food/list`);
       setList(response.data.data);
     } catch (error) {
       console.error("Failed to fetch food list:", error.message);
@@ -17,9 +18,9 @@ const List = ({ url }) => {
 
   const removeFood = async (id) => {
     try {
-      const response = await axios.delete(`${url}/api/food/remove?id=${id}`);
+      const response = await axios.delete(`${API_BASE_URL}/api/food/remove?id=${id}`);
       toast.success(response.data.message);
-      fetchList(); // Refresh after deletion
+      fetchList();
     } catch (error) {
       toast.error("Failed to delete item");
       console.error(error.message);
@@ -27,7 +28,7 @@ const List = ({ url }) => {
   };
 
   useEffect(() => {
-    fetchList(); // On first render
+    fetchList();
   }, []);
 
   return (
@@ -51,7 +52,7 @@ const List = ({ url }) => {
         ) : (
           list.map((item, index) => (
             <div key={index} className="list-table-format">
-              <img src={`${url}/uploads/${item.image}`} alt={item.name} />
+              <img src={`${API_BASE_URL}/uploads/${item.image}`} alt={item.name} />
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>₹{item.price}</p>
