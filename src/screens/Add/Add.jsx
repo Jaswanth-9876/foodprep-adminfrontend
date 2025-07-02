@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import axios from "axios";
 import "./Add.css";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const Add = () => {
-  const [image, setImage] = useState(false);
+  const [image, setImage] = useState(null);
   const [data, setData] = useState({
     name: "",
     description: "",
@@ -14,7 +14,7 @@ const Add = () => {
     category: "Salad",
   });
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const API_BASE_URL = import.meta.env.VITE_API_URL;
 
   const onChangeHandler = (e) => {
@@ -22,18 +22,27 @@ const Add = () => {
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const uploadImageToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "foodprep_unsigned");
+    formData.append("cloud_name", "dxsko86rc");
+
+    const res = await axios.post("https://api.cloudinary.com/v1_1/dxsko86rc/image/upload", formData);
+    return res.data.secure_url;
+  };
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("description", data.description);
-    formData.append("price", Number(data.price));
-    formData.append("category", data.category);
-    formData.append("image", image);
-
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/food/add`, formData);
+      const imageUrl = await uploadImageToCloudinary(image);
+
+      const response = await axios.post(`${API_BASE_URL}/api/food/add`, {
+        ...data,
+        image: imageUrl,
+      });
+
       toast.success(response.data.message);
 
       setData({
@@ -42,11 +51,10 @@ const Add = () => {
         price: "",
         category: "Salad",
       });
-      setImage(false);
-
-      navigate('/list');
+      setImage(null);
+      navigate("/list");
     } catch (error) {
-      console.error("❌ Add Food Failed:", error.response?.data || error.message);
+      console.error("Add Food Failed:", error.response?.data || error.message);
       toast.error("Failed to add food item");
     }
   };
@@ -55,7 +63,6 @@ const Add = () => {
     <div className="screen">
       <div className="container">
         <form onSubmit={onSubmitHandler} className="flex-col">
-          {/* Image Upload */}
           <div className="add-img-upload flex-col">
             <p>Upload Image</p>
             <label htmlFor="image">
@@ -73,7 +80,6 @@ const Add = () => {
             />
           </div>
 
-          {/* Name */}
           <div className="add-product-name flex-col">
             <p>Product name</p>
             <input
@@ -86,7 +92,6 @@ const Add = () => {
             />
           </div>
 
-          {/* Description */}
           <div className="add-product-description flex-col">
             <p>Product Description</p>
             <textarea
@@ -99,7 +104,6 @@ const Add = () => {
             ></textarea>
           </div>
 
-          {/* Category & Price */}
           <div className="add-category-price">
             <div className="add-category flex-col">
               <p>Category</p>
@@ -133,9 +137,7 @@ const Add = () => {
             </div>
           </div>
 
-          <button type="submit" className="add-btn">
-            ADD
-          </button>
+          <button type="submit" className="add-btn">ADD</button>
         </form>
       </div>
     </div>

@@ -52,7 +52,8 @@ const List = () => {
         ) : (
           list.map((item, index) => (
             <div key={index} className="list-table-format">
-              <img src={`${API_BASE_URL}/uploads/${item.image}`} alt={item.name} />
+              <img src={item.image} alt={item.name} />
+
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>₹{item.price}</p>
