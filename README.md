@@ -1,12 +1,25 @@
-# React + Vite
+🍴 FoodPrep – Admin Frontend
+📌 Overview
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+FoodPrep is an online food ordering system with separate interfaces for users and administrators.
+This repository contains the Admin Frontend, built with React.js, which allows admins to manage food items, view orders, and track system activity. It connects with the backend APIs deployed on Render.
 
-Currently, two official plugins are available:
+🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🍔 Menu Management – Add, update, and remove food items.
 
-## Expanding the ESLint configuration
+📦 Order Tracking – View and update customer orders.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+📊 Dashboard – Overview of orders and menu items.
+
+🌐 API Integration – Connected with backend via REST APIs.
+
+🎨 Responsive UI – Works on desktop and tablet screens.
+
+🛠️ Tech Stack
+
+Frontend: React.js, CSS, JavaScript
+
+Backend (API): Node.js, Express.js, MongoDB 
+
+Deployment: Render
